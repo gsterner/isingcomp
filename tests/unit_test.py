@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../src')
 import systemdata
+import grid
 
 DATA_FOLDER = '../data/'
 SPIN_DATA_SMALL_FILE = 'spin_data_small.json'
@@ -31,3 +32,8 @@ def test_connection_data_dimension_row():
 def test_connection_data_dimension_column():
     system_data = systemdata.SystemData(spin_data_small_path())
     assert len(system_data.connections[0]) == 16
+
+def test_grid_get_spin_matrix():
+    system_data = systemdata.SystemData(spin_data_small_path())
+    current_grid = grid.Grid(system_data)
+    assert current_grid.get_spin_matrix() == system_data.spins
