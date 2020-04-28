@@ -6,8 +6,8 @@ def has_right_connection(j_row, j_col, spin_dimension):
         return True
     return False
 
-def has_left_connection(j_row, j_col):
-    if j_col == 0:
+def has_left_connection(j_row, j_col, spin_dimension):
+    if j_row % spin_dimension == 0:
         return False
     if j_row == (j_col + 1):
         print(j_row, j_col)
@@ -29,7 +29,7 @@ def has_up_connection(j_row, j_col, spin_dimension):
     return False
 
 def has_connection(j_row, j_col, spin_dimension):
-    return has_right_connection(j_row, j_col, spin_dimension) or has_left_connection(j_row, j_col) or has_down_connection(j_row, j_col, spin_dimension) or has_up_connection(j_row, j_col, spin_dimension)
+    return has_right_connection(j_row, j_col, spin_dimension) or has_left_connection(j_row, j_col, spin_dimension) or has_down_connection(j_row, j_col, spin_dimension) or has_up_connection(j_row, j_col, spin_dimension)
 
     #2D Symmetric connection square system non-periodic
 def create_constant_nearest_neighbour_connections(rows, cols, connection_value):
