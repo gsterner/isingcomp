@@ -1,4 +1,3 @@
-
 def has_right_connection(j_row, j_col, spin_dimension):
     if j_col == spin_dimension:
         return False
@@ -10,7 +9,6 @@ def has_left_connection(j_row, j_col, spin_dimension):
     if j_row % spin_dimension == 0:
         return False
     if j_row == (j_col + 1):
-        print(j_row, j_col)
         return True
     return False
 
@@ -53,3 +51,4 @@ def pp_connection_matrix(connection_matrix):
 
 J = create_constant_nearest_neighbour_connections(2, 2, 1)
 pp_connection_matrix(J)
+print(J)
