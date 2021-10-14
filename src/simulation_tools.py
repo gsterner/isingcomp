@@ -2,7 +2,7 @@ import hamiltonian as ha
 from random import random
 import copy
 
-#testing
+
 def satisfies_boltzman_draw():
     return random < 0.5
 
