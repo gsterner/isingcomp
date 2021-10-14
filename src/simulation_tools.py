@@ -21,8 +21,18 @@ def flip_spin(index, spins):
     spins_copy[index] = spins_copy[index] * -1
     return spins_copy
 
-spins = [1,1,1,1]
-print(spins)
-spins_flip = flip_spin(2,spins)
-print(spins)
-print(spins_flip)
+#TODO test this
+def sim_step(spins, connections):
+    #pick random site
+    index = random_function(spins) #TODO implement
+    #flip that spin
+    spins_flip = flip_spin(index, spins)
+    #check if that should be kept and update
+    if is_flip(index, spins, spins_flip, connections): #TODO test is_flip function
+        spins = spins_flip
+
+# spins = [1,1,1,1]
+# print(spins)
+# spins_flip = flip_spin(2,spins)
+# print(spins)
+# print(spins_flip)
