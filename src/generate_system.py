@@ -1,3 +1,5 @@
+import random
+
 def has_right_connection(j_row, j_col, spin_dimension):
     if j_col == spin_dimension:
         return False
@@ -49,6 +51,12 @@ def pp_connection_matrix(connection_matrix):
     for j_row_list in connection_matrix:
         print(j_row_list)
 
-J = create_constant_nearest_neighbour_connections(2, 2, 1)
-#pp_connection_matrix(J)
-#print(J)
+def random_spin():
+    if random.random() < 0.5:
+        return -1
+    else:
+        return 1
+
+def create_randomized_spins(size):
+    spin_list = [random_spin() for spin in range(size)]
+    return spin_list

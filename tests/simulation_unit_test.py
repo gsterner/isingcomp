@@ -25,3 +25,15 @@ def test_is_flip():
     J = generate_system.create_constant_nearest_neighbour_connections(2,2,1)
     is_flip_val = simulation_tools.is_flip(2, S, S_flip, J)
     assert is_flip_val == True or is_flip_val == False
+
+def test_randomize_index():
+    S = [1,1,1,1]
+    random_number = simulation_tools.randomize_index(S)
+    assert random_number >= 0 and random_number < len(S)
+    assert type(random_number) == type(int())
+
+def test_sim_step():
+    S = [-1,1,1,-1]
+    J = generate_system.create_constant_nearest_neighbour_connections(2,2,1)
+    S_step = simulation_tools.sim_step(S, J)
+    assert S_step != S
