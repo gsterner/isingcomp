@@ -50,5 +50,5 @@ def pp_connection_matrix(connection_matrix):
         print(j_row_list)
 
 J = create_constant_nearest_neighbour_connections(2, 2, 1)
-pp_connection_matrix(J)
-print(J)
+#pp_connection_matrix(J)
+#print(J)

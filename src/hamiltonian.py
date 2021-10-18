@@ -1,5 +1,5 @@
 def spin_hamiltonian(spin, all_spins, spin_connections):
-    return spin * sum(i[0] * i[1] for i in zip(all_spins, spin_connections))
+    return -1* spin * sum(i[0] * i[1] for i in zip(all_spins, spin_connections))
 
 def spin_hamiltonian_of_index(index, spins, connections):
     return spin_hamiltonian(spins[index], spins, connections[index])
