@@ -68,7 +68,7 @@ def has_periodic_up_connection(j_row, j_col, spin_dimension):
     return False
 
 def has_periodic_connection(j_row, j_col, spin_dimension):
-    return has_periodic_right__connection(j_row, j_col, spin_dimension) or has_periodic_left_connection(j_row, j_col, spin_dimension) or has_periodic_down_connection(j_row, j_col, spin_dimension) or has_periodic_up_connection(j_row, j_col, spin_dimension)
+    return has_periodic_right_connection(j_row, j_col, spin_dimension) or has_periodic_left_connection(j_row, j_col, spin_dimension) or has_periodic_down_connection(j_row, j_col, spin_dimension) or has_periodic_up_connection(j_row, j_col, spin_dimension)
 
 def create_periodic_nearest_neighbour_connections(rows, cols, connection_value):
     #assume square spin matrix rows = cols
@@ -84,8 +84,6 @@ def create_periodic_nearest_neighbour_connections(rows, cols, connection_value):
                 row_list.append(0)
         connection_matrix.append(row_list)
     return connection_matrix
-
-
 
 def pp_connection_matrix(connection_matrix):
     for j_row_list in connection_matrix:

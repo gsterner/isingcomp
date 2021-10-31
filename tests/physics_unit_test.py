@@ -50,3 +50,14 @@ def test_generate_nearest_neighbour_connections():
                             [0, 1, 1, 0]]
     connections = generate_system.create_constant_nearest_neighbour_connections(2,2,1)
     assert connections == expected_connections
+
+def test_generate_nearest_neighbour_connections():
+    expected_connections = [[0, 1, 1, 0],
+                            [1, 0, 0, 1],
+                            [1, 0, 0, 1],
+                            [0, 1, 1, 0]]
+    connections = generate_system.create_periodic_nearest_neighbour_connections(2,2,1)
+    generate_system.pp_connection_matrix(connections)
+
+connections = generate_system.create_periodic_nearest_neighbour_connections(3,3,1)
+generate_system.pp_connection_matrix(connections)
