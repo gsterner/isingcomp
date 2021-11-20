@@ -56,7 +56,7 @@ def spin_to_char(spin):
 
 def setup_nearest_neigbour_system(system_size, rows):
     spins = gs.create_randomized_spins(system_size)
-    connections = gs.create_constant_nearest_neighbour_connections(rows, rows, 1)
+    connections = gs.create_total_nearest_neighbour_connections(rows, rows, 1)
     return spins, connections
 
 def chunker(seq, size):
@@ -67,24 +67,17 @@ def pp_spin_system(spins, row_size):
     for row in chunker(spins_as_chars, row_size):
         print(''.join(row))
 
-#######################
-N = 400
-T = 0.1
-rows = int(math.sqrt(N))
-S,J = setup_nearest_neigbour_system(N, rows)
-pp_spin_system(S, rows)
-print('_'*rows)
-for i in range(100):
-    S = sweep(S, J, T)
-    pp_spin_system(S, rows)
-    print('_'*rows, sum(S))
+def magnetization(spins):
+    return sum(spins) / len(spins)
 
-#TODO Make test of below
-# rows = 5
-# connections_nn = gs.create_constant_nearest_neighbour_connections(rows, rows, 1)
-# connections_p = gs.create_periodic_nearest_neighbour_connections(rows, rows, 1)
-# connections_total = gs.add_matrices(connections_nn, connections_p)
-# gs.pp_connection_matrix(connections_total)
-# calc_sum = gs.sum_connections(connections_total)
-# check_sum = gs.checksum_total(rows)
-# print("calculated", calc_sum, "check", check_sum)
+#######################
+# N = 400
+# T = 0.1
+# rows = int(math.sqrt(N))
+# S,J = setup_nearest_neigbour_system(N, rows)
+# pp_spin_system(S, rows)
+# print('_'*rows)
+# for i in range(100):
+#     S = sweep(S, J, T)
+#     pp_spin_system(S, rows)
+#     print('_'*rows, sum(S), magnetization(S))
