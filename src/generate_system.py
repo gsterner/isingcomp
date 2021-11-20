@@ -115,6 +115,11 @@ def add_matrices(matrix_one, matrix_two):
             out_matrix[r][c] = matrix_one[r][c] + matrix_two[r][c]
     return out_matrix
 
+def create_total_nearest_neighbour_connections(rows, cols, connection_value):
+    nn_maxtrix = create_constant_nearest_neighbour_connections(rows, cols, connection_value)
+    p_matrix = create_periodic_nearest_neighbour_connections(rows, cols, connection_value)
+    return add_matrices(nn_maxtrix, p_matrix)
+
 def pp_connection_matrix(connection_matrix):
     for j_row_list in connection_matrix:
         print(j_row_list)
