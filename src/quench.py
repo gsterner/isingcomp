@@ -1,5 +1,6 @@
 import simulation_tools as sim
 import math
+import pylab as pl
 
 def percent(part, full):
     return str(part/full * 100) + "%"
@@ -25,30 +26,59 @@ def quencher():
     sim.pp_spin_system(S, rows)
     return sim.magnetization(S)
 
-def simple():
-    N = 196
-    Q = 110
-    T = 0.3
+def simple(N, Q, T):
+    # N = 256
+    # Q = 5000
+    # T = 0.11
     rows = int(math.sqrt(N))
     S,J = sim.setup_nearest_neigbour_system(N, rows)
+    magnetization =  []
     #sim.pp_spin_system(S, rows)
     for i in range(Q):
         S = sim.sweep(S, J, T)
-    sim.pp_spin_system(S, rows)
-    return sim.magnetization(S)
+        magnetization.append(sim.magnetization(S))
+        #print(percent(i, Q))
+    #sim.pp_spin_system(S, rows)
+    return magnetization
 
-def simulation():
-    SIMS = 20
+def simulation(N, Q, T, SIMS):
+    #SIMS = 1
     magnetization = []
     for s in range(SIMS):
-        m = simple()
+        m = simple(N, Q, T)
         #m = quencher()
         print(percent(s, SIMS))
         magnetization.append(m)
     return magnetization
 
-magnet = simulation()
-abs_magnet = [abs(m) for m in magnet]
-print(magnet)
-print(abs_magnet)
-print(sum(magnet), sum(abs_magnet), sum(magnet)/len(magnet), sum(abs_magnet)/len(abs_magnet))
+def calc_abs_magnetization(magnet, cutoff):
+    abs_magnet = [abs(m) for m in magnet]
+    cut_off_magnet = abs_magnet[cutoff:]
+    return sum(cut_off_magnet)/len(cut_off_magnet)
+
+def mean_over_simulations(N, Q, T, sims, cut_off):
+    M = simulation(N, Q, T, sims)
+    abs_m = []
+    for m in M:
+        abs_m.append(calc_abs_magnetization(m, cut_off))
+    return sum(abs_m)/len(abs_m)
+
+def pre_analyze(N, Q, T):
+    magnet = simulation(N, Q, T, 1)[0]
+    abs_magnet = [abs(m) for m in magnet]
+    pl.subplot(2,1,1)
+    pl.plot(magnet)
+    pl.subplot(2,1,2)
+    pl.plot(abs_magnet)
+    pl.show()
+    #print(abs_magnet)
+    print(sum(magnet), sum(abs_magnet), sum(magnet)/len(magnet), sum(abs_magnet)/len(abs_magnet))
+
+pre_analyze(64, 100, 0.01)
+# temperatures = [0.01, 0.02, 0.03]
+# magnets = []
+# for temp in temperatures:
+#     magnets.append(mean_over_simulations(64, 100, temp, 5, 80))
+
+# pl.plot(temperatures, magnets)
+# pl.show()
