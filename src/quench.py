@@ -47,7 +47,7 @@ def simulation(N, Q, T, SIMS):
     for s in range(SIMS):
         m = simple(N, Q, T)
         #m = quencher()
-        print(percent(s, SIMS))
+        #print(percent(s, SIMS))
         magnetization.append(m)
     return magnetization
 
@@ -74,11 +74,13 @@ def pre_analyze(N, Q, T):
     #print(abs_magnet)
     print(sum(magnet), sum(abs_magnet), sum(magnet)/len(magnet), sum(abs_magnet)/len(abs_magnet))
 
-pre_analyze(64, 100, 0.01)
-# temperatures = [0.01, 0.02, 0.03]
-# magnets = []
-# for temp in temperatures:
-#     magnets.append(mean_over_simulations(64, 100, temp, 5, 80))
+#pre_analyze(100, 1000, 0.01)
+temperatures = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16]
+magnets = []
+for temp in temperatures:
+    print(temp)
+    magnets.append(mean_over_simulations(144, 1000, temp, 10, 600))
 
-# pl.plot(temperatures, magnets)
-# pl.show()
+print(magnets)
+pl.plot(temperatures, magnets)
+pl.show()
