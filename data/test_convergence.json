@@ -1,0 +1,9 @@
+{
+    "temperatures": [
+        0.01
+    ],
+    "system_size": 400,
+    "sweeps_to_equilibrium": 200,
+    "simulations_to_average_over": 1,
+    "sweeps_to_include_in_calculation_fraction": 0.6
+}
