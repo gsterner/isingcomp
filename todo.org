@@ -2,3 +2,4 @@
 *** TODO Make command line that calls equilibriate directly
 *** TODO Think of api for handling separate S and J that can be combined
 **** The use case is that one has a J and just want random S.
+*** TODO Remove pylab from simulation code
