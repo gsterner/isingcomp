@@ -1,5 +1,5 @@
 import runner_utils as runner
-import pylab as pl
+#import pylab as pl
 import argparse
 import json
 
@@ -17,8 +17,9 @@ def pre_analyze(N, Q, T):
 def run_simulation(system_size, sweeps_to_equilibrium, temperatures, simulations_to_average_over, sweeps_to_include_in_calculation_fraction):
     magnets = []
     for temp in temperatures:
-        print(temp)
-        magnets.append(runner.mean_over_simulations(system_size, sweeps_to_equilibrium, temp, simulations_to_average_over, sweeps_to_include_in_calculation_fraction))
+        magnet = runner.mean_over_simulations(system_size, sweeps_to_equilibrium, temp, simulations_to_average_over, sweeps_to_include_in_calculation_fraction)
+        magnets.append(magnet)
+        print(temp, magnet)
     return magnets
 
 def main():
@@ -40,9 +41,9 @@ def main():
                                             temperatures,
                                             simulations_to_average_over,
                                             sweeps_to_include_in_calculation_fraction)
-    print(magnetization_per_temp)
-    pl.plot(temperatures, magnetization_per_temp)
-    pl.show()
+    # print(magnetization_per_temp)
+    # pl.plot(temperatures, magnetization_per_temp)
+    # pl.show()
 
 if __name__ == "__main__":
     main()
