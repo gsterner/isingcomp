@@ -1,5 +1,4 @@
 import equilibrium as equilib
-import pylab as pl
 
 def percent(part, full):
     return str(part/full * 100) + "%"
