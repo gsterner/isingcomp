@@ -1,14 +1,16 @@
 import equilibrium as equilib
+import simulation_tools as sim
+import math
 
 def percent(part, full):
     return str(part/full * 100) + "%"
 
 def simulation(N, Q, T, SIMS):
     #SIMS = 1
+    S,J = sim.setup_nearest_neigbour_system(N, int(math.sqrt(N)))
     magnetization = []
     for s in range(SIMS):
-        m = equilib.equilibriate(N, Q, T)
-        #m = quencher()
+        m = equilib.equilibriate(S, J, Q, T)
         #print(percent(s, SIMS))
         magnetization.append(m)
     return magnetization

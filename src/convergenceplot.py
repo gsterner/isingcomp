@@ -1,11 +1,13 @@
 import equilibrium as equilib
+import simulation_tools as sim
 import pylab as pl
 import argparse
 import json
 
 def run_simulation(system_size, sweeps_to_equilibrium, temperatures):
     temp = temperatures[0]
-    return equilib.equilibriate(system_size, sweeps_to_equilibrium, temp)
+    spins, connections = sim.setup_nearest_neigbour_system(system_size, int(math.sqrt(system_size)))
+    return equilib.equilibriate(spins, connections, sweeps_to_equilibrium, temp)
 
 def main():
     parser = argparse.ArgumentParser(description='Run ising simulation from input file')
