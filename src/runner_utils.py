@@ -19,7 +19,7 @@ def calc_abs_magnetization(magnet, cut_off_fraction):
     return sum(cut_off_magnet)/len(cut_off_magnet)
 
 def mean_over_simulations(N, Q, T, sims, cut_off_fraction):
-    S,J = sim.-setup_nearest_neigbour_system(N, int(math.sqrt(N)))
+    S,J = sim.setup_nearest_neigbour_system(N, int(math.sqrt(N)))
     M = simulation(S, J, Q, T, sims)
     abs_m = []
     for m in M:
