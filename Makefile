@@ -6,3 +6,9 @@ system-setup-test:
 
 equilibrium-test:
 	python3 src/equilibrium.py data/system_16.json 100 0.16
+
+polymersim:
+	python3 src/polymersim.py polymer.csv
+
+plot-polymersim: polymersim
+	gnuplot -e "filename='polymer.csv'" -p src/plotrandomwalk.gnuplot
