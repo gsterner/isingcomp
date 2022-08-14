@@ -4,7 +4,6 @@ import csv
 import argparse
 
 CLASH = "CLASH"
-NUMBER_POINTS = 30
 
 class Direction(enum.Enum):
     NORTH = enum.auto()
@@ -44,20 +43,20 @@ def update_position_self_avoiding(position_list, step):
     position_list.append(new_position)
     return position_list
 
-def random_walk():
+def random_walk(number_of_steps):
     START = [0,0]
     positions = [START]
-    for number in range(NUMBER_POINTS):
+    for number in range(number_of_steps):
         random_number = random.random()
         direction = direction_from_rand(random_number)
         step = step_from_direction(direction)
         positions = update_position(positions, step)
     return positions
 
-def self_avoiding_random_walk():
+def self_avoiding_random_walk(number_of_steps):
     START = [0,0]
     positions = [START]
-    for number in range(NUMBER_POINTS):
+    for number in range(number_of_steps):
         random_number = random.random()
         direction = direction_from_rand(random_number)
         step = step_from_direction(direction)
@@ -68,11 +67,11 @@ def self_avoiding_random_walk():
             positions = update
     return positions
 
-def self_avoiding_random_walk_complete():
+def self_avoiding_random_walk_complete(number_of_steps):
     polymer_positions = []
     tries = 0
-    while len(polymer_positions) < NUMBER_POINTS:
-        polymer_positions = self_avoiding_random_walk()
+    while len(polymer_positions) < number_of_steps:
+        polymer_positions = self_avoiding_random_walk(number_of_steps)
         tries += 1
         #print('length', len(polymer_positions))
     print("Number of tries:", tries)
@@ -82,9 +81,10 @@ def self_avoiding_random_walk_complete():
 def main():
     parser = argparse.ArgumentParser(description='Run polymersimulation')
     parser.add_argument('output_file', metavar='output_file', type=str, help='Output File')
+    parser.add_argument('number_steps', metavar='number_steps', type=int, help='Number of Steps')
     args = parser.parse_args()
 
-    polymer_positions = self_avoiding_random_walk_complete()
+    polymer_positions = self_avoiding_random_walk_complete(args.number_steps)
     with open(args.output_file, 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(polymer_positions)
