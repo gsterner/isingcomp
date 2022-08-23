@@ -11,4 +11,10 @@ polymersim:
 	python3 src/polymersim.py polymer.csv 30
 
 plot-polymersim: polymersim
-	gnuplot -e "filename='polymer.csv'" -p src/plotrandomwalk.gnuplot
+	gnuplot -e "filename='polymer.csv'; p_range=20" -p src/plotrandomwalk.gnuplot
+
+clash-check:
+	python3 src/polymerstatistics.py
+
+plot-clash-check: clash-check
+	gnuplot -e "filename='clash_check.csv'; p_range=4" -p src/plotrandomwalk.gnuplot
