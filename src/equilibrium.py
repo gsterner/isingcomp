@@ -16,6 +16,12 @@ def equilibriate(S, J, Q, T):
         magnetization.append(sim.magnetization(S))
     return magnetization
 
+def save_spins(spins, file_name):
+    out_dict = {"spins":spins}
+    with open(file_name, 'w') as f:
+        json.dump(out_dict, f)
+        f.close()
+
 def main():
     parser = argparse.ArgumentParser(description='Run ising equilibrium from input file')
     parser.add_argument('system_file', metavar='system_file', type=str, help='System File')
@@ -30,6 +36,7 @@ def main():
                         system["connections"],
                         args.sweeps_to_equilibrium,
                         args.temperature)
+    save_spins(spins, "spins_output.json")
     print(args.temperature, sim.magnetization(spins))
 
 if __name__ == "__main__":
