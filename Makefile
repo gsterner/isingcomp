@@ -18,3 +18,11 @@ clash-check:
 
 plot-clash-check: clash-check
 	gnuplot -e "filename='clash_check.csv'; p_range=4" -p src/plotrandomwalk.gnuplot
+
+plot-translated:
+	gnuplot -e "filename='translated.csv'; p_range=4" -p src/plotrandomwalk.gnuplot
+
+translate-spin-output-to-random-walk:
+	python3 src/system_translation.py spins_output.json translated.csv
+
+translate-spin-to-walk-and-plot: translate-spin-output-to-random-walk plot-translated
