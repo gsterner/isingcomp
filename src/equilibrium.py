@@ -23,21 +23,25 @@ def save_spins(spins, file_name):
         f.close()
 
 def main():
-    parser = argparse.ArgumentParser(description='Run ising equilibrium from input file')
-    parser.add_argument('system_file', metavar='system_file', type=str, help='System File')
+    parser = argparse.ArgumentParser(description='Run ising equilibrium from input files')
+    parser.add_argument('spin_file', metavar='spin_file', type=str, help='Spin File')
+    parser.add_argument('connection_file', metavar='connection_file', type=str, help='Connection File')
     parser.add_argument('sweeps_to_equilibrium', metavar='sweeps_to_equilibrium', type=int, help='Number of sweeps to reach equilibrium')
     parser.add_argument('temperature', metavar='temperature', type=float, help='Temperature')
     args = parser.parse_args()
-    f_sys = open(args.system_file)
-    system = json.load(f_sys)
-    f_sys.close()
+    f_spins = open(args.spin_file)
+    spins = json.load(f_spins)
+    f_spins.close()
+    f_connections = open(args.connection_file)
+    connections = json.load(f_connections)
+    f_connections.close()
 
-    spins = equilibrium(system["spins"],
-                        system["connections"],
-                        args.sweeps_to_equilibrium,
-                        args.temperature)
-    save_spins(spins, "spins_output.json")
-    print(args.temperature, sim.magnetization(spins))
+    equilibrium_spins = equilibrium(spins["spins"],
+                                    connections["connections"],
+                                    args.sweeps_to_equilibrium,
+                                    args.temperature)
+    save_spins(equilibrium_spins, "spins_output.json")
+    print(args.temperature, sim.magnetization(equilibrium_spins))
 
 if __name__ == "__main__":
     main()

@@ -5,7 +5,7 @@ system-setup-test:
 	python3 src/system_setup.py 16 system_16.json
 
 equilibrium-test:
-	python3 src/equilibrium.py data/system_16.json 100 0.16
+	python3 src/equilibrium.py data/spins_16.json data/connections_16.json 100 0.16
 
 polymersim:
 	python3 src/polymersim.py polymer.csv 30
