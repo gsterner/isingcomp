@@ -22,15 +22,10 @@ plot-clash-check: clash-check
 plot-translated:
 	gnuplot -e "filename='translated.csv'; p_range=4" -p src/plotrandomwalk.gnuplot
 
-translate-spin-output-to-random-walk:
-	python3 src/system_translation.py spins_output.json translated.csv
+translate-spin-file-to-random-walk:
+	python3 src/system_translation.py $(SPIN_FILE) translated.csv
 
-translate-spin-output-to-walk-and-plot: translate-spin-output-to-random-walk plot-translated
+translate-and-plot-spin-file: translate-spin-file-to-random-walk plot-translated
 
-translate-original-spin-to-random-walk:
-	python3 src/system_translation.py data/spins_4.json translated.csv
-
-translate-original-spin-to-walk-and-plot: translate-original-spin-to-random-walk plot-translated
-
-equilibriate-four-spins:
-	python3 src/equilibrium.py data/spins_4.json data/connections_4.json 100 0.16
+equilibriate:
+	python3 src/equilibrium.py $(SPINS) $(CONNECTIONS) 100 0.16

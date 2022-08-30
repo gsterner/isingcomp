@@ -1,3 +1,4 @@
+import hamiltonian as ha
 import simulation_tools as sim
 import argparse
 import json
@@ -40,8 +41,14 @@ def main():
                                     connections["connections"],
                                     args.sweeps_to_equilibrium,
                                     args.temperature)
+
     save_spins(equilibrium_spins, "spins_output.json")
-    print(args.temperature, sim.magnetization(equilibrium_spins))
+    start_energy = ha.hamiltonian_of_system(spins["spins"], connections["connections"])
+    end_energy = ha.hamiltonian_of_system(equilibrium_spins, connections["connections"])
+    print("Start spins", spins["spins"])
+    print("End spins  ", equilibrium_spins)
+    print("Start Energy: ", start_energy, "End Energy :", end_energy)
+    print("Temperature: ", args.temperature, "Magnetization: ", sim.magnetization(equilibrium_spins))
 
 if __name__ == "__main__":
     main()
