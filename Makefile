@@ -25,4 +25,12 @@ plot-translated:
 translate-spin-output-to-random-walk:
 	python3 src/system_translation.py spins_output.json translated.csv
 
-translate-spin-to-walk-and-plot: translate-spin-output-to-random-walk plot-translated
+translate-spin-output-to-walk-and-plot: translate-spin-output-to-random-walk plot-translated
+
+translate-original-spin-to-random-walk:
+	python3 src/system_translation.py data/spins_4.json translated.csv
+
+translate-original-spin-to-walk-and-plot: translate-original-spin-to-random-walk plot-translated
+
+equilibriate-four-spins:
+	python3 src/equilibrium.py data/spins_4.json data/connections_4.json 100 0.16
