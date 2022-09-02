@@ -82,15 +82,29 @@ def dump_random_walk_to_csv(file_name, polymer_positions):
         writer = csv.writer(f)
         writer.writerows(polymer_positions)
 
-
-#TODO clean up interface so that type of walk can be configured, and number of steps parameter. Also clean up functions and remove duplicated code.
 def main():
     parser = argparse.ArgumentParser(description='Run polymersimulation')
-    parser.add_argument('output_file', metavar='output_file', type=str, help='Output File')
-    parser.add_argument('number_steps', metavar='number_steps', type=int, help='Number of Steps')
+    parser.add_argument('--walk',
+                        default='random',
+                        const='random',
+                        nargs='?',
+                        choices=['self_avoiding', 'random'],
+                        help='Choose type of random walk (default: %(default)s)')
+    parser.add_argument('output_file',
+                        metavar='output_file',
+                        type=str,
+                        help='Output File')
+    parser.add_argument('number_steps',
+                        metavar='number_steps',
+                        type=int,
+                        help='Number of Steps')
     args = parser.parse_args()
 
-    polymer_positions = self_avoiding_random_walk_complete(args.number_steps)
+    if args.walk == 'self_avoiding':
+        polymer_positions = self_avoiding_random_walk_complete(args.number_steps)
+    else:
+        polymer_positions = random_walk(args.number_steps)
+
     dump_random_walk_to_csv(args.output_file, polymer_positions)
 
 if __name__ == "__main__":
