@@ -1,5 +1,6 @@
 import hamiltonian as ha
 import simulation_tools as sim
+import utils
 import argparse
 import json
 
@@ -16,12 +17,6 @@ def equilibriate(S, J, Q, T):
         S = sim.sweep(S, J, T)
         magnetization.append(sim.magnetization(S))
     return magnetization
-
-def save_spins(spins, file_name):
-    out_dict = {"spins":spins}
-    with open(file_name, 'w') as f:
-        json.dump(out_dict, f)
-        f.close()
 
 def main():
     parser = argparse.ArgumentParser(description='Run ising equilibrium from input files')
@@ -42,7 +37,7 @@ def main():
                                     args.sweeps_to_equilibrium,
                                     args.temperature)
 
-    save_spins(equilibrium_spins, "spins_output.json")
+    utils.save_spins(equilibrium_spins, "spins_output.json")
     start_energy = ha.hamiltonian_of_system(spins["spins"], connections["connections"])
     end_energy = ha.hamiltonian_of_system(equilibrium_spins, connections["connections"])
     print("Start spins", spins["spins"])
