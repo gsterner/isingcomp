@@ -29,3 +29,9 @@ translate-and-plot-spin-file: translate-spin-file-to-random-walk plot-translated
 
 equilibriate:
 	python3 src/equilibrium.py $(SPINS) $(CONNECTIONS) 100 0.16
+
+test-translation-from-spins-to-positions:
+	python3 src/system_translation.py --translation spins_to_positions data/spins_4.json translated.csv
+
+test-translation-from-positions-to-spins:
+	python3 src/system_translation.py --translation positions_to_spins data/positions.csv translated.json
