@@ -8,7 +8,7 @@ equilibrium-test:
 	python3 src/equilibrium.py data/spins_16.json data/connections_16.json 100 0.16
 
 polymersim:
-	python3 src/polymersim.py polymer.csv 30
+	python3 src/polymersim.py polymer.csv $(LENGTH)
 
 plot-polymersim: polymersim
 	gnuplot -e "filename='polymer.csv'; p_range=20" -p src/plotrandomwalk.gnuplot
