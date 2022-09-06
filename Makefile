@@ -22,8 +22,14 @@ plot-clash-check: clash-check
 plot-translated:
 	gnuplot -e "filename='translated.csv'; p_range=4" -p src/plotrandomwalk.gnuplot
 
+plot-polymer:
+	gnuplot -e "filename='$(POLYMER)'; p_range=4; set title '$(POLYMER)'; show title" -p src/plotrandomwalk.gnuplot
+
 translate-spin-file-to-random-walk:
 	python3 src/system_translation.py $(SPIN_FILE) translated.csv
+
+translate-polymer-to-spin-file:
+	python3 src/system_translation.py --translation positions_to_spins polymer.csv translated.json
 
 translate-and-plot-spin-file: translate-spin-file-to-random-walk plot-translated
 
@@ -35,3 +41,6 @@ test-translation-from-spins-to-positions:
 
 test-translation-from-positions-to-spins:
 	python3 src/system_translation.py --translation positions_to_spins data/positions.csv translated.json
+
+#make equilibriate-poly LENGTH=2 SPINS=translated.json CONNECTIONS=data/connections_4.json SPIN_FILE=spins_output.json POLYMER=polymer.csv
+equilibriate-poly: polymersim translate-polymer-to-spin-file equilibriate translate-and-plot-spin-file plot-polymer
