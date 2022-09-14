@@ -44,3 +44,6 @@ test-translation-from-positions-to-spins:
 
 #make equilibriate-poly LENGTH=2 SPINS=translated.json CONNECTIONS=data/connections_4.json SPIN_FILE=spins_output.json POLYMER=polymer.csv
 equilibriate-poly: polymersim translate-polymer-to-spin-file equilibriate translate-and-plot-spin-file plot-polymer
+
+test-connection-matrix-from-spin-config:
+	python3 src/connection_matrix_creation.py data/spin_config_4.json
