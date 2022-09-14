@@ -1,4 +1,4 @@
-import utils
+import data_utils
 import numpy as np
 import argparse
 import json
@@ -32,7 +32,7 @@ def main():
     spins = json.load(f_spins)
     f_spins.close()
     connections = estimate_connections(spins["spin_configs"])
-    utils.save_connections(connections, "connections_output.json")
+    data_utils.save_connections(connections, "connections_output.json")
 
 if __name__ == "__main__":
     main()
