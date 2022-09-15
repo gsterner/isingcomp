@@ -47,3 +47,6 @@ equilibriate-poly: polymersim translate-polymer-to-spin-file equilibriate transl
 
 test-connection-matrix-from-spin-config:
 	python3 src/connection_matrix_creation.py data/spin_config_4.json
+
+test-translation-from-position-configs-to-spins:
+	python3 src/system_translation.py --translation position_configs_to_spins data/position_configs.csv spin_configs.json

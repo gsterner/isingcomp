@@ -82,11 +82,13 @@ def order_postions(positions_raw):
         positions_ordered.append(config_positions)
     return positions_ordered
 
-
 def translate_position_configs_to_spins(data):
     positions_raw = convert_list_list_char_to_int(data)
-    positions = order_postions(positions_raw)
-    print(positions)
+    positions_multi = order_postions(positions_raw)
+    spins_multi = []
+    for positions in positions_multi:
+        spins_multi.append(translate_positions_to_spins(positions))
+    return spins_multi
 
 def main():
     parser = argparse.ArgumentParser(description='Translate spin system to random walk')
@@ -120,8 +122,8 @@ def main():
         reader = csv.reader(f)
         input_data= list(reader)
         f.close()
-        translate_position_configs_to_spins(input_data)
-
+        spin_configs = translate_position_configs_to_spins(input_data)
+        data_utils.save_spin_configs(spin_configs, args.output_file)
 
 if __name__ == "__main__":
     main()
