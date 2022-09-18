@@ -1,6 +1,6 @@
+import data_utils
 import enum
 import random
-import csv
 import argparse
 
 CLASH = "CLASH"
@@ -77,11 +77,6 @@ def self_avoiding_random_walk_complete(number_of_steps):
     print("Number of tries:", tries)
     return polymer_positions
 
-def dump_random_walk_to_csv(file_name, polymer_positions):
-    with open(file_name, 'w', encoding='UTF8', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerows(polymer_positions)
-
 def main():
     parser = argparse.ArgumentParser(description='Run polymersimulation')
     parser.add_argument('--walk',
@@ -105,7 +100,7 @@ def main():
     else:
         polymer_positions = random_walk(args.number_steps)
 
-    dump_random_walk_to_csv(args.output_file, polymer_positions)
+    data_utils.dump_random_walk_to_csv(args.output_file, polymer_positions)
 
 if __name__ == "__main__":
     main()
