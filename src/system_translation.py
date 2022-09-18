@@ -91,7 +91,7 @@ def main():
         f.close()
         spin_system = input_data["spins"]
         polymer_positions = translate_spins_to_positions(spin_system)
-        polsim.dump_random_walk_to_csv(args.output_file, polymer_positions)
+        data_utils.dump_random_walk_to_csv(args.output_file, polymer_positions)
     elif args.translation == 'positions_to_spins':
         f = open(args.input_file)
         reader = csv.reader(f)
