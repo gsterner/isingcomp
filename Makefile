@@ -50,3 +50,6 @@ test-connection-matrix-from-spin-config:
 
 test-translation-from-position-configs-to-spins:
 	python3 src/system_translation.py --translation position_configs_to_spins data/position_configs.csv spin_configs.json
+
+test-filter-unallowed-polymer-configs:
+	python3 src/polymertrainingset.py data/position_configs_all_2.csv unallowed_postion_configs.csv

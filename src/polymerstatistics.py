@@ -1,6 +1,14 @@
 import polymersim as polsim
 from collections import Counter
 
+def has_duplicates(positions):
+    positions_left = positions[1:]
+    for pos in positions:
+        if pos in positions_left:
+            return True
+        positions_left = positions_left[1:]
+    return False
+
 def positions_as_strings(polymer_positions):
     return [str(p) for p in polymer_positions]
 
@@ -13,9 +21,9 @@ def count_clashes(polymer_positions):
             clash_count += (clash_check - 1)
     return clash_count
 
-random_walk = polsim.random_walk(4)
-print(random_walk)
-pos_as_strings = positions_as_strings(random_walk)
-clashes = count_clashes(pos_as_strings)
-print(clashes)
-polsim.dump_random_walk_to_csv("clash_check.csv", random_walk)
+# random_walk = polsim.random_walk(4)
+# print(random_walk)
+# pos_as_strings = positions_as_strings(random_walk)
+# clashes = count_clashes(pos_as_strings)
+# print(clashes)
+# polsim.dump_random_walk_to_csv("clash_check.csv", random_walk)

@@ -6,9 +6,6 @@ import argparse
 import json
 import csv
 
-def convert_list_list_char_to_int(outer_list):
-    return [[int(char_element) for char_element in inner_list] for inner_list in outer_list]
-
 def spin_pair_to_direction(spin_pair):
     if spin_pair == (1,1):
         return Direction.NORTH
@@ -69,22 +66,8 @@ def translate_positions_to_spins(positions):
         spins.extend(spin_pair)
     return spins
 
-def order_postions(positions_raw):
-    number_of_configs = int(len(positions_raw[0])/2)
-    grouped_rows = []
-    for pos in positions_raw:
-        grouped_rows.append(list(simulation_tools.chunker(pos,2)))
-    positions_ordered = []
-    for config in range(number_of_configs):
-        config_positions = []
-        for row in grouped_rows:
-            config_positions.append(row[config])
-        positions_ordered.append(config_positions)
-    return positions_ordered
-
 def translate_position_configs_to_spins(data):
-    positions_raw = convert_list_list_char_to_int(data)
-    positions_multi = order_postions(positions_raw)
+    positions_multi = data_utils.position_config_csv_to_matrix(data)
     spins_multi = []
     for positions in positions_multi:
         spins_multi.append(translate_positions_to_spins(positions))
@@ -114,7 +97,7 @@ def main():
         reader = csv.reader(f)
         input_data= list(reader)
         f.close()
-        positions_in = convert_list_list_char_to_int(input_data)
+        positions_in = data_utils.convert_list_list_char_to_int(input_data)
         spin_system = translate_positions_to_spins(positions_in)
         data_utils.save_spins(spin_system, args.output_file)
     else:
