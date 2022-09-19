@@ -11,6 +11,8 @@ class Direction(enum.Enum):
     EAST  = enum.auto()
     WEST  = enum.auto()
 
+ALL_DIRECTIONS = [Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST]
+
 def direction_from_rand(rand_nr):
     if rand_nr < 0.25:
         return Direction.NORTH
@@ -76,6 +78,25 @@ def self_avoiding_random_walk_complete(number_of_steps):
         #print('length', len(polymer_positions))
     print("Number of tries:", tries)
     return polymer_positions
+
+def add_walks_and_positions(positions):
+    position_configs = []
+    for current_direction in ALL_DIRECTIONS:
+        new_positions = positions.copy()
+        step = step_from_direction(current_direction)
+        position_configs.append(update_position(new_positions, step))
+    return position_configs
+
+def brute_force_position_configs(steps):
+    START = [0,0]
+    position_configs = [[START]]
+    for step in range(steps):
+        new_position_configs = []
+        for current_positions in position_configs:
+            added_position_configs = add_walks_and_positions(current_positions)
+            new_position_configs.extend(added_position_configs)
+        position_configs = new_position_configs
+    return position_configs
 
 def main():
     parser = argparse.ArgumentParser(description='Run polymersimulation')

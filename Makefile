@@ -53,3 +53,6 @@ test-translation-from-position-configs-to-spins:
 
 test-filter-unallowed-polymer-configs:
 	python3 src/polymertrainingset.py data/position_configs_all_2.csv unallowed_postion_configs.csv
+
+test-bruteforce-all-polymers:
+	python3 src/bruteforcepolymers.py 2 position_configs_all_2.csv
