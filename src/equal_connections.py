@@ -21,6 +21,16 @@ def zero_connections(matrix_dim):
     connections = connections.astype(int)
     return connections.tolist()
 
+def banded_connections(matrix_dim):
+    connections = np.ones((matrix_dim, matrix_dim))
+    connections = connections.astype(int)
+    for di in range(matrix_dim):
+        for du in range(matrix_dim):
+            if (di + du) %  2 != 0:
+                connections[di, du] = 0
+    print(connections)
+    return connections.tolist()
+
 def main():
     parser = argparse.ArgumentParser(description='Create connection matrix with equal weights')
     parser.add_argument('matrix_dim',
@@ -29,8 +39,9 @@ def main():
                         help='Matrix dimension')
 
     args = parser.parse_args()
-    connections = equal_connections(args.matrix_dim)
-    data_utils.save_connections(connections, "equal_connections.json")
+    #connections = equal_connections(args.matrix_dim)
+    connections = banded_connections(args.matrix_dim)
+    data_utils.save_connections(connections, "banded_connections.json")
 
 if __name__ == "__main__":
     main()
