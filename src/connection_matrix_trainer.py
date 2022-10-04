@@ -5,7 +5,7 @@ import polymerstatistics as polstat
 import numpy as np
 from numpy import linalg
 
-walk_length = 3
+walk_length = 5
 spin_dim = 2 * walk_length
 no_test_walks = 10000
 connections_total = np.zeros((spin_dim, spin_dim))
@@ -14,15 +14,21 @@ unallowed_count = 0
 #why does it work with 4 but not the others???
 
 #Find a way to skip those that have already been done???
+unallowed_walks = set()
 for i in range(no_test_walks):
     polymer_positions = poly.random_walk(walk_length)
     is_unallowed = polstat.has_duplicates(polymer_positions)
-    if is_unallowed:
+    if is_unallowed and polymer_positions.__str__() not in unallowed_walks:
+        unallowed_walks.add(polymer_positions.__str__())
         spin_system = systrans.translate_positions_to_spins(polymer_positions)
         connections = cmc.outer_square(spin_system)
         connections_total += connections
         unallowed_count += 1
 
+for walk in unallowed_walks:
+    print(walk)
+
+print(connections_total)
 connections_total = connections_total / unallowed_count
 print("unalllowed",unallowed_count)
 print("norm", linalg.norm(connections_total))
