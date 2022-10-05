@@ -6,6 +6,7 @@ import polymerstatistics as polstat
 import numpy as np
 from numpy import linalg
 import argparse
+import time
 
 def is_unallowed(polymer_positions):
     return polstat.has_duplicates(polymer_positions)
@@ -30,7 +31,7 @@ def train_connection_matrix(spin_dim, walk_length, no_test_walks):
         if i > (percent_step * percent_count):
             print(percent_count, "%")
             percent_count += 1
-    return unallowed_walks, connections_total
+    return unallowed_walks, (-1 * connections_total)
 
 def connection_matrix_simulation(walk_length, no_test_walks):
     spin_dim = 2 * walk_length
@@ -51,10 +52,16 @@ def main():
                         help='Number walks used in simulation')
     parser.add_argument('output_file', metavar='output_file', type=str, help='Output File')
     args = parser.parse_args()
+    tic = time.time()
     unallowed_walks, connections_total = connection_matrix_simulation(args.walk_length, args.number_test_walks)
+    toc = time.time()
     data_utils.save_connections(connections_total.tolist(), args.output_file)
+    connections_normal = normalize_connection_matrix(connections_total, len(unallowed_walks))
+    data_utils.save_connections(connections_normal.tolist(), "norm_" + args.output_file)
+
     print("Number of unalllowed walks",len(unallowed_walks))
     print("Matrix Norm", linalg.norm(connections_total))
+    print("Time: ", toc - tic)
 
 if __name__ == "__main__":
     main()
