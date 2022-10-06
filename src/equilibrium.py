@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description='Run ising equilibrium from input files')
     parser.add_argument('spin_file', metavar='spin_file', type=str, help='Spin File')
     parser.add_argument('connection_file', metavar='connection_file', type=str, help='Connection File')
+    parser.add_argument('output_file', metavar='output_file', type=str, help='Output File')
     parser.add_argument('sweeps_to_equilibrium', metavar='sweeps_to_equilibrium', type=int, help='Number of sweeps to reach equilibrium')
     parser.add_argument('temperature', metavar='temperature', type=float, help='Temperature')
     args = parser.parse_args()
@@ -37,7 +38,7 @@ def main():
                                     args.sweeps_to_equilibrium,
                                     args.temperature)
 
-    data_utils.save_spins(equilibrium_spins, "spins_output.json")
+    data_utils.save_spins(equilibrium_spins, args.output_file)
     start_energy = ha.hamiltonian_of_system(spins["spins"], connections["connections"])
     end_energy = ha.hamiltonian_of_system(equilibrium_spins, connections["connections"])
     print("Start spins", spins["spins"])

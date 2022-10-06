@@ -34,7 +34,7 @@ translate-polymer-to-spin-file:
 translate-and-plot-spin-file: translate-spin-file-to-random-walk plot-translated
 
 equilibriate:
-	python3 src/equilibrium.py $(SPINS) $(CONNECTIONS) 100 0.16
+	python3 src/equilibrium.py $(SPINS) $(CONNECTIONS) $(SPIN_FILE) 100 0.16
 
 test-translation-from-spins-to-positions:
 	python3 src/system_translation.py --translation spins_to_positions data/spins_4.json translated.csv
