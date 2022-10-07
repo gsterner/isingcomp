@@ -12,14 +12,19 @@ def has_duplicates(positions):
 def positions_as_strings(polymer_positions):
     return [str(p) for p in polymer_positions]
 
-def count_clashes(polymer_positions):
-    count_dict = Counter(polymer_positions)
+def count_clashes_strings(polymer_positions_strings):
+    count_dict = Counter(polymer_positions_strings)
     clash_count = 0
     for key in count_dict:
         clash_check = count_dict[key]
         if clash_check > 1:
             clash_count += (clash_check - 1)
     return clash_count
+
+def count_clashes(polymer_positions):
+    polymer_positions_strings = positions_as_strings(polymer_positions)
+    return count_clashes_strings(polymer_positions_strings)
+
 
 # random_walk = polsim.random_walk(4)
 # print(random_walk)
