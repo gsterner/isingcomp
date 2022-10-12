@@ -1,6 +1,8 @@
 import polymersim as polsim
 from collections import Counter
+from numba import jit
 
+@jit(nopython=True)
 def has_duplicates(positions):
     positions_left = positions[1:]
     for pos in positions:

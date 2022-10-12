@@ -2,7 +2,9 @@ import data_utils
 import numpy as np
 import argparse
 import json
+from numba import jit
 
+@jit(nopython=True)
 def outer_square(spins_np):
     return np.outer(spins_np, spins_np)
 

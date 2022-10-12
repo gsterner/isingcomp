@@ -2,6 +2,7 @@ import data_utils
 import enum
 import random
 import argparse
+from numba import jit
 
 CLASH = "CLASH"
 
@@ -13,6 +14,7 @@ class Direction(enum.Enum):
 
 ALL_DIRECTIONS = [Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST]
 
+@jit(nopython=True)
 def direction_from_rand(rand_nr):
     if rand_nr < 0.25:
         return Direction.NORTH
@@ -22,6 +24,7 @@ def direction_from_rand(rand_nr):
         return Direction.EAST
     return Direction.WEST
 
+@jit(nopython=True)
 def step_from_direction(direction_in):
     if direction_in == Direction.NORTH:
         return [0,1]
@@ -31,6 +34,7 @@ def step_from_direction(direction_in):
         return [1, 0]
     return [-1, 0]
 
+@jit(nopython=True)
 def update_position(position_list, step):
     current_position = position_list[-1]
     new_position = [current_position[0] + step[0], current_position[1] + step[1]]
@@ -45,6 +49,7 @@ def update_position_self_avoiding(position_list, step):
     position_list.append(new_position)
     return position_list
 
+@jit(nopython=True)
 def random_walk(number_of_steps):
     START = [0,0]
     positions = [START]

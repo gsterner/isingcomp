@@ -5,6 +5,7 @@ import data_utils
 import argparse
 import json
 import csv
+from numba import jit
 
 def spin_pair_to_direction(spin_pair):
     if spin_pair == (1,1):
@@ -15,6 +16,7 @@ def spin_pair_to_direction(spin_pair):
         return Direction.WEST
     return Direction.SOUTH
 
+@jit(nopython=True)
 def direction_to_spin_pair(direction):
     if direction == Direction.NORTH:
         return (1,1)
@@ -24,7 +26,7 @@ def direction_to_spin_pair(direction):
         return (-1,1)
     return (-1,-1)
 
-
+@jit(nopython=True)
 def position_pair_to_direction(prev_position, next_position):
     direction_as_array = (next_position[0] - prev_position[0], next_position[1] - prev_position[1])
     if direction_as_array == (0,1):
@@ -38,6 +40,7 @@ def position_pair_to_direction(prev_position, next_position):
 def split_spins_into_pairs(spin_system):
     return [tuple(spin_system[i:i+2]) for i in range(0, len(spin_system), 2)]
 
+@jit(nopython=True)
 def positions_to_directions(positions):
     directions = []
     for i in range(len(positions) - 1):
@@ -58,6 +61,7 @@ def translate_spins_to_positions(spin_system):
     directions = [spin_pair_to_direction(spin_pair) for spin_pair in splitted_spin_system]
     return random_walk_from_directions(directions)
 
+@jit(nopython=True)
 def translate_positions_to_spins(positions):
     directions = positions_to_directions(positions)
     spins = []

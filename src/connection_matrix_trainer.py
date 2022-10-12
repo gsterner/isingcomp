@@ -3,21 +3,36 @@ import polymersim as poly
 import system_translation as systrans
 import connection_matrix_creation as cmc
 import polymerstatistics as polstat
+from numba import jit
 import numpy as np
 from numpy import linalg
 import argparse
 import time
 
+@jit(nopython=True)
+def serialize_walk(polymer_positions):
+    out_number= 0
+    order = 1
+    for position in polymer_positions:
+        for element in position:
+            out_number += element * order
+            order = order * 10
+    return out_number
+
+@jit(nopython=True)
 def is_unallowed(polymer_positions):
     return polstat.has_duplicates(polymer_positions)
 
+@jit(nopython=True)
 def is_covered(polymer_positions, unallowed_walks):
-    return polymer_positions.__str__() in unallowed_walks
+    return serialize_walk(polymer_positions) in unallowed_walks
 
+@jit(nopython=True)
 def single_connection_matrix_from_random_walk(polymer_positions):
     spin_system = systrans.translate_positions_to_spins(polymer_positions)
     return cmc.outer_square(spin_system)
 
+@jit(nopython=True)
 def train_connection_matrix(spin_dim, walk_length, no_test_walks):
     percent_step = no_test_walks / 100
     percent_count = 1
@@ -26,7 +41,7 @@ def train_connection_matrix(spin_dim, walk_length, no_test_walks):
     for i in range(no_test_walks):
         polymer_positions = poly.random_walk(walk_length)
         if is_unallowed(polymer_positions) and not is_covered(polymer_positions, unallowed_walks):
-            unallowed_walks.add(polymer_positions.__str__())
+            unallowed_walks.add(serialize_walk(polymer_positions))
             connections_total += single_connection_matrix_from_random_walk(polymer_positions)
         if i > (percent_step * percent_count):
             print(percent_count, "%")
