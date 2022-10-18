@@ -7,6 +7,7 @@ import json
 import csv
 from numba import jit
 
+@jit(nopython=True)
 def spin_pair_to_direction(spin_pair):
     if spin_pair == (1,1):
         return Direction.NORTH
@@ -37,8 +38,9 @@ def position_pair_to_direction(prev_position, next_position):
         return Direction.WEST
     return Direction.SOUTH
 
+@jit(nopython=True)
 def split_spins_into_pairs(spin_system):
-    return [tuple(spin_system[i:i+2]) for i in range(0, len(spin_system), 2)]
+    return [(spin_system[i], spin_system[i+1]) for i in range(0, len(spin_system), 2)]
 
 @jit(nopython=True)
 def positions_to_directions(positions):
@@ -48,6 +50,7 @@ def positions_to_directions(positions):
         directions.append(position_pair_to_direction(pos[0], pos[1]))
     return directions
 
+@jit(nopython=True)
 def random_walk_from_directions(directions):
     START = [0,0]
     positions = [START]
@@ -56,6 +59,7 @@ def random_walk_from_directions(directions):
         positions = polsim.update_position(positions, step)
     return positions
 
+@jit(nopython=True)
 def translate_spins_to_positions(spin_system):
     splitted_spin_system = split_spins_into_pairs(spin_system)
     directions = [spin_pair_to_direction(spin_pair) for spin_pair in splitted_spin_system]

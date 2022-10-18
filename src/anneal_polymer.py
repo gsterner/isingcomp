@@ -8,9 +8,11 @@ import argparse
 import json
 import csv
 import statistics as stats
+import numba
 
 def anneal_polymer_positions(polymer_positions, connections, sweeps, temperature):
-    spins = systrans.translate_positions_to_spins(polymer_positions)
+    numba_positions = numba.typed.List(polymer_positions)
+    spins = systrans.translate_positions_to_spins(numba_positions)
     equilibrium_spins = equil.equilibrium(spins,
                                           connections,
                                           sweeps,
