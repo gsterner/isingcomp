@@ -5,6 +5,7 @@ import data_utils
 import argparse
 import json
 import csv
+import numba
 from numba import jit
 
 @jit(nopython=True)
@@ -106,7 +107,8 @@ def main():
         input_data= list(reader)
         f.close()
         positions_in = data_utils.convert_list_list_char_to_int(input_data)
-        spin_system = translate_positions_to_spins(positions_in)
+        numba_positions = numba.typed.List(positions_in)
+        spin_system = translate_positions_to_spins(numba_positions)
         data_utils.save_spins(spin_system, args.output_file)
     else:
         f = open(args.input_file)
