@@ -28,7 +28,7 @@ def main():
     clash_means =  [calc_mean_clashes(length, args.number_runs) for length in walk_lengths]
 
     for len_index in range(len(walk_lengths)):
-        out_str = str(walk_lengths[len_index]) + "," + str(clash_means[len_index])
+        out_str = str(walk_lengths[len_index]) + "," + str(clash_means[len_index]) + "," + str(clash_means[len_index]/walk_lengths[len_index])
         print(out_str)
 
 if __name__ == "__main__":
