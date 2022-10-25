@@ -9,6 +9,7 @@ import json
 import csv
 import statistics as stats
 import numba
+import numpy as np
 
 def anneal_polymer_positions(polymer_positions, connections, sweeps, temperature):
     numba_positions = numba.typed.List(polymer_positions)
@@ -46,7 +47,8 @@ def main():
                                                           args.temperature)
         end_clashes.append(polstat.count_clashes(polymer_positions_end))
 
-    print("start:", start_clashes, "end mean:", stats.mean(end_clashes))
+    print(end_clashes)
+    print("start:", start_clashes, "end mean:", stats.mean(end_clashes), "counts:", np.histogram(end_clashes))
 
 if __name__ == "__main__":
     main()
