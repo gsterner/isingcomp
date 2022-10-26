@@ -45,10 +45,10 @@ def split_spins_into_pairs(spin_system):
 
 @jit(nopython=True)
 def positions_to_directions(positions):
-    directions = []
+    directions = numba.typed.List()
     for i in range(len(positions) - 1):
         pos = positions[i:i+2]
-        directions.append(position_pair_to_direction(pos[0], pos[1]))
+        directions.append(position_pair_to_direction(numba.typed.List(pos[0]), numba.typed.List(pos[1])))
     return directions
 
 @jit(nopython=True)
@@ -62,13 +62,13 @@ def random_walk_from_directions(directions):
 
 @jit(nopython=True)
 def translate_spins_to_positions(spin_system):
-    splitted_spin_system = split_spins_into_pairs(spin_system)
+    splitted_spin_system = split_spins_into_pairs(numba.typed.List(spin_system))
     directions = [spin_pair_to_direction(spin_pair) for spin_pair in splitted_spin_system]
     return random_walk_from_directions(directions)
 
 @jit(nopython=True)
 def translate_positions_to_spins(positions):
-    directions = positions_to_directions(positions)
+    directions = positions_to_directions(numba.typed.List(positions))
     spins = []
     for direct in directions:
         spin_pair = direction_to_spin_pair(direct)

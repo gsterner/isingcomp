@@ -12,13 +12,15 @@ import numba
 import numpy as np
 
 def anneal_polymer_positions(polymer_positions, connections, sweeps, temperature):
-    numba_positions = numba.typed.List(polymer_positions)
+    numba_positions = numba.typed.List()
+    for pos in polymer_positions:
+        numba_positions.append(numba.typed.List(pos))
     spins = systrans.translate_positions_to_spins(numba_positions)
     equilibrium_spins = equil.equilibrium(spins,
                                           connections,
                                           sweeps,
                                           temperature)
-    return systrans.translate_spins_to_positions(equilibrium_spins)
+    return systrans.translate_spins_to_positions(numba.typed.List(equilibrium_spins))
 
 def convert_histogram_edges_to_mids(edges):
     distance = edges[1:] - edges[:-1]
@@ -45,17 +47,22 @@ def main():
     polymer_positions_start = data_utils.convert_list_list_char_to_int(polymer_positions_strings)
     start_clashes = polstat.count_clashes(polymer_positions_start)
     end_clashes = []
+    percent_step = args.number_runs / 100
+    percent_count = 1
     for i in range(args.number_runs):
         polymer_positions_end =  anneal_polymer_positions(polymer_positions_start,
                                                           connections["connections"],
                                                           args.sweeps_to_equilibrium,
                                                           args.temperature)
         end_clashes.append(polstat.count_clashes(polymer_positions_end))
+        if i > (percent_step * percent_count):
+            print(percent_count, "%")
+            percent_count += 1
 
     print("start:", start_clashes, "end mean:", stats.mean(end_clashes))
-    bins, edges = np.histogram(end_clashes)
+    bin_values, edges = np.histogram(end_clashes, bins=range(len(polymer_positions_start)))
     mids = convert_histogram_edges_to_mids(edges)
-    data_utils.dump_two_columns_to_csv(args.output_file, mids, bins)
+    data_utils.dump_two_columns_to_csv(args.output_file, mids, bin_values)
 
 if __name__ == "__main__":
     main()
