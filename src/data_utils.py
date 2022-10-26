@@ -61,3 +61,11 @@ def order_positions_columnwise(position_config_matrix):
     for pos_index in range(polymer_length):
         positions_rows.append(pick_row(pos_index, position_config_matrix))
     return positions_rows
+
+def dump_two_columns_to_csv(file_name, first, second):
+    rows = []
+    for rownumber in range(len(first)):
+        rows.append([ first[rownumber], second[rownumber] ])
+    with open(file_name, 'w', encoding='UTF8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)

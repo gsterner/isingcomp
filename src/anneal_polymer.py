@@ -20,11 +20,16 @@ def anneal_polymer_positions(polymer_positions, connections, sweeps, temperature
                                           temperature)
     return systrans.translate_spins_to_positions(equilibrium_spins)
 
+def convert_histogram_edges_to_mids(edges):
+    distance = edges[1:] - edges[:-1]
+    mids = edges[:-1] + distance / 2
+    return mids
+
 def main():
     parser = argparse.ArgumentParser(description='Anneal Random walk')
     parser.add_argument('polymer_positions_in', metavar='polymer_positions_in', type=str, help='Random walk file in')
     parser.add_argument('connection_file', metavar='connection_file', type=str, help='Connection File')
-    parser.add_argument('output_file_polymers', metavar='output_file_polymers', type=str, help='Output Random Walk File ')
+    parser.add_argument('output_file', metavar='output_file', type=str, help='Output File ')
     parser.add_argument('sweeps_to_equilibrium', metavar='sweeps_to_equilibrium', type=int, help='Number of sweeps to reach equilibrium')
     parser.add_argument('number_runs', metavar='number_runs', type=int, help='Number of runs')
     parser.add_argument('temperature', metavar='temperature', type=float, help='Temperature')
@@ -47,8 +52,10 @@ def main():
                                                           args.temperature)
         end_clashes.append(polstat.count_clashes(polymer_positions_end))
 
-    print(end_clashes)
-    print("start:", start_clashes, "end mean:", stats.mean(end_clashes), "counts:", np.histogram(end_clashes))
+    print("start:", start_clashes, "end mean:", stats.mean(end_clashes))
+    bins, edges = np.histogram(end_clashes)
+    mids = convert_histogram_edges_to_mids(edges)
+    data_utils.dump_two_columns_to_csv(args.output_file, mids, bins)
 
 if __name__ == "__main__":
     main()
