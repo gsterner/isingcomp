@@ -1,10 +1,5 @@
 import enum
-
-class Direction(enum.Enum):
-    NORTH = enum.auto()
-    SOUTH = enum.auto()
-    EAST = enum.auto()
-    WEST = enum.auto()
+from polymersim import Direction
 
 class Node():
     def __init__(self):
@@ -23,7 +18,6 @@ class Node():
         if direction == Direction.WEST:
             self.west = Node()
 
-
     def get_child(self, direction):
         if direction == Direction.NORTH:
             return self.north
@@ -33,7 +27,7 @@ class Node():
             return self.east
         if direction == Direction.WEST:
             return self.west
-        
+
     def has_child(self, direction):
         if direction == Direction.NORTH:
             return self.north != None
@@ -44,10 +38,10 @@ class Node():
         if direction == Direction.WEST:
             return self.west != None
 
-test_walk = [Direction.NORTH, Direction.WEST]
+# test_walk = [Direction.NORTH, Direction.WEST]
 
-tree_root = Node()
-current_node = tree_root
-for current_direction in test_walk:
-    current_node.add_child(current_direction)
-    current_node = current_node.get_child(current_direction)
+# tree_root = Node()
+# current_node = tree_root
+# for current_direction in test_walk:
+#     current_node.add_child(current_direction)
+#     current_node = current_node.get_child(current_direction)
