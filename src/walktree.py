@@ -17,10 +17,12 @@ class Node():
     def has_child(self, direction):
         return self.children[direction] != None
 
-# test_walk = [Direction.NORTH, Direction.WEST]
+class WalkTree():
+    def __init__(self):
+        self.root = Node()
 
-# tree_root = Node()
-# current_node = tree_root
-# for current_direction in test_walk:
-#     current_node.add_child(current_direction)
-#     current_node = current_node.get_child(current_direction)
+    def add_walk(self, walk):
+        current_node = self.root
+        for current_direction in walk:
+            current_node.add_child(current_direction)
+            current_node = current_node.get_child(current_direction)
