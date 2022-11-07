@@ -26,3 +26,12 @@ class WalkTree():
         for current_direction in walk:
             current_node.add_child(current_direction)
             current_node = current_node.get_child(current_direction)
+
+    def has_walk(self, walk):
+        current_node = self.root
+        for current_direction in walk:
+            if current_node.has_child(current_direction):
+                current_node = current_node.get_child(current_direction)
+            else:
+                return False
+        return True
