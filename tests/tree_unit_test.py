@@ -2,6 +2,7 @@ import sys
 sys.path.append('../src')
 import walktree
 from polymersim import Direction
+import numba
 
 def test_node_add():
     tree_node = walktree.Node()
@@ -25,7 +26,7 @@ def test_node_get():
 
 def test_tree_add():
     tree = walktree.WalkTree()
-    test_walk = [Direction.NORTH, Direction.WEST]
+    test_walk = numba.typed.List([Direction.NORTH, Direction.WEST])
     tree.add_walk(test_walk)
     north_child = tree.root.get_child(Direction.NORTH)
     south_child = tree.root.get_child(Direction.SOUTH)
@@ -46,18 +47,18 @@ def test_tree_add():
 
 def test_tree_has():
     tree = walktree.WalkTree()
-    add_walk = [Direction.NORTH, Direction.WEST]
+    add_walk = numba.typed.List([Direction.NORTH, Direction.WEST])
     tree.add_walk(add_walk)
-    test_walk_one = [Direction.SOUTH, Direction.WEST]
-    test_walk_two = [Direction.NORTH, Direction.EAST]
+    test_walk_one = numba.typed.List([Direction.SOUTH, Direction.WEST])
+    test_walk_two = numba.typed.List([Direction.NORTH, Direction.EAST])
     assert tree.has_walk(add_walk) == True
     assert tree.has_walk(test_walk_one) == False
     assert tree.has_walk(test_walk_two) == False
 
 def test_tree_has_long():
     tree = walktree.WalkTree()
-    add_walk = [Direction.NORTH, Direction.WEST, Direction.NORTH, Direction.WEST, Direction.SOUTH]
+    add_walk = numba.typed.List([Direction.NORTH, Direction.WEST, Direction.NORTH, Direction.WEST, Direction.SOUTH])
     tree.add_walk(add_walk)
-    test_walk_one = [Direction.NORTH, Direction.WEST, Direction.NORTH, Direction.SOUTH, Direction.SOUTH]
+    test_walk_one = numba.typed.List([Direction.NORTH, Direction.WEST, Direction.NORTH, Direction.SOUTH, Direction.SOUTH])
     assert tree.has_walk(add_walk) == True
     assert tree.has_walk(test_walk_one) == False
