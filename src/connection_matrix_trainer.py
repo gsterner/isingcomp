@@ -1,3 +1,4 @@
+import walktree
 import data_utils
 import polymersim as poly
 import system_translation as systrans
@@ -37,16 +38,19 @@ def train_connection_matrix(spin_dim, walk_length, no_test_walks):
     percent_step = no_test_walks / 100
     percent_count = 1
     connections_total = np.zeros((spin_dim, spin_dim))
-    unallowed_walks = set()
+    unallowed_walks = walktree.WalkTree()
+    number_unallowed = 0
     for i in range(no_test_walks):
         polymer_positions = poly.random_walk(walk_length)
-        if is_unallowed(polymer_positions) and not is_covered(polymer_positions, unallowed_walks):
-            unallowed_walks.add(serialize_walk(polymer_positions))
+        polymer_directions = systrans.positions_to_directions(polymer_positions)
+        if is_unallowed(polymer_positions) and not unallowed_walks.has_walk(polymer_directions):
+            unallowed_walks.add_walk(polymer_directions)
+            number_unallowed += 1
             connections_total += single_connection_matrix_from_random_walk(polymer_positions)
         if i > (percent_step * percent_count):
             print(percent_count, "%")
             percent_count += 1
-    return unallowed_walks, (-1 * connections_total)
+    return number_unallowed, (-1 * connections_total)
 
 def connection_matrix_simulation(walk_length, no_test_walks):
     spin_dim = 2 * walk_length
@@ -68,13 +72,13 @@ def main():
     parser.add_argument('output_file', metavar='output_file', type=str, help='Output File')
     args = parser.parse_args()
     tic = time.time()
-    unallowed_walks, connections_total = connection_matrix_simulation(args.walk_length, args.number_test_walks)
+    number_unallowed, connections_total = connection_matrix_simulation(args.walk_length, args.number_test_walks)
     toc = time.time()
     data_utils.save_connections(connections_total.tolist(), args.output_file)
-    connections_normal = normalize_connection_matrix(connections_total, len(unallowed_walks))
+    connections_normal = normalize_connection_matrix(connections_total, number_unallowed)
     data_utils.save_connections(connections_normal.tolist(), "norm_" + args.output_file)
 
-    print("Number of unalllowed walks",len(unallowed_walks))
+    print("Number of unalllowed walks", number_unallowed)
     print("Matrix Norm", linalg.norm(connections_total))
     print("Time: ", toc - tic)
 
