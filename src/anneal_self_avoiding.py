@@ -61,23 +61,14 @@ def main():
 
     polymer_positions_start = data_utils.convert_list_list_char_to_int(polymer_positions_strings)
     start_clashes = polstat.count_clashes(polymer_positions_start)
-    end_clashes = []
-    percent_step = args.number_runs / 100
-    percent_count = 1
     for i in range(args.number_runs):
         polymer_positions_end =  anneal_polymer_positions_profile(polymer_positions_start,
                                                                   connections["connections"],
                                                                   temperature_profile["sweeps"],
                                                                   temperature_profile["temperature"])
-        end_clashes.append(polstat.count_clashes(polymer_positions_end))
-        if i > (percent_step * percent_count):
-            print(percent_count, "%")
-            percent_count += 1
-
-    print("start:", start_clashes, "end mean:", stats.mean(end_clashes), "end standard deviation:", stats.stdev(end_clashes))
-    bin_values, edges = np.histogram(end_clashes, bins=range(len(polymer_positions_start)))
-    mids = convert_histogram_edges_to_mids(edges)
-    data_utils.dump_two_columns_to_csv(args.output_file, mids, bin_values)
+    end_clashes = polstat.count_clashes(polymer_positions_end)
+    print("start:", start_clashes, "end mean:", end_clashes)
+    data_utils.dump_random_walk_to_csv(args.output_file, polymer_positions_end)
 
 if __name__ == "__main__":
     main()
