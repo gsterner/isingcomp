@@ -81,7 +81,7 @@ def self_avoiding_random_walk_complete(number_of_steps):
         polymer_positions = self_avoiding_random_walk(number_of_steps)
         tries += 1
         #print('length', len(polymer_positions))
-    print("Number of tries:", tries)
+    #print("Number of tries:", tries)
     return polymer_positions
 
 def add_walks_and_positions(positions):

@@ -1,3 +1,4 @@
+import walktree
 import data_utils
 import polymerstatistics as polstat
 import system_translation as systrans
@@ -61,14 +62,21 @@ def main():
 
     polymer_positions_start = data_utils.convert_list_list_char_to_int(polymer_positions_strings)
     start_clashes = polstat.count_clashes(polymer_positions_start)
+    unique_walks = walktree.WalkTree()
+    number_unique = 0
     for i in range(args.number_runs):
         polymer_positions_end =  anneal_polymer_positions_profile(polymer_positions_start,
                                                                   connections["connections"],
                                                                   temperature_profile["sweeps"],
                                                                   temperature_profile["temperature"])
-    end_clashes = polstat.count_clashes(polymer_positions_end)
-    print("start:", start_clashes, "end mean:", end_clashes)
-    data_utils.dump_random_walk_to_csv(args.output_file, polymer_positions_end)
+        polymer_directions = systrans.positions_to_directions(numba.typed.List(polymer_positions_end))
+        end_clashes = polstat.count_clashes(polymer_positions_end)
+        if end_clashes == 0 and not unique_walks.has_walk(polymer_directions):
+            unique_walks.add_walk(polymer_directions)
+            number_unique += 1
+        print("run:", i, "end clashes:", end_clashes, "unique walks:", number_unique)
+
+    #data_utils.dump_random_walk_to_csv(args.output_file, polymer_positions_end)
 
 if __name__ == "__main__":
     main()
