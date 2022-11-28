@@ -64,6 +64,7 @@ def main():
     start_clashes = polstat.count_clashes(polymer_positions_start)
     unique_walks = walktree.WalkTree()
     number_unique = 0
+    root_mean_squares = []
     for i in range(args.number_runs):
         polymer_positions_end =  anneal_polymer_positions_profile(polymer_positions_start,
                                                                   connections["connections"],
@@ -74,9 +75,11 @@ def main():
         if end_clashes == 0 and not unique_walks.has_walk(polymer_directions):
             unique_walks.add_walk(polymer_directions)
             number_unique += 1
-        print("run:", i, "end clashes:", end_clashes, "unique walks:", number_unique)
+            root_mean_squares.append(polstat.root_mean_square(polymer_positions_end))
+
+        print("run:", i, "end clashes:", end_clashes, "unique walks:", number_unique, "mean rms:", np.mean(root_mean_squares))
 
     #data_utils.dump_random_walk_to_csv(args.output_file, polymer_positions_end)
-
+    print(root_mean_squares)
 if __name__ == "__main__":
     main()

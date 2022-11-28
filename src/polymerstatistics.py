@@ -1,6 +1,7 @@
 import polymersim as polsim
 from collections import Counter
 from numba import jit
+import numpy as np
 
 @jit(nopython=True)
 def has_duplicates(positions):
@@ -27,6 +28,9 @@ def count_clashes(polymer_positions):
     polymer_positions_strings = positions_as_strings(polymer_positions)
     return count_clashes_strings(polymer_positions_strings)
 
+def root_mean_square(polymer_positions):
+    pos = np.array(polymer_positions)
+    return np.sqrt(np.mean(pos**2))
 
 # random_walk = polsim.random_walk(4)
 # print(random_walk)
